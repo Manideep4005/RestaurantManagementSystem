@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Admin Registration</title>
+	<link rel="icon" type="image/png" href="C:/Users/Manideep/Desktop/restuarant.png">
+
+<script type="text/javascript">
+function myFunction() {
+	  var x = document.getElementById("myInput");
+	  if (x.type === "password") {
+	    x.type = "text";
+	  } else {
+	    x.type = "password";
+	  }
+	}
+</script>
+
+
+<style type="text/css">
+	body {
+/*		background-color:  wheat;*/
+background-image: linear-gradient(to right, #141e30 , #243b55);
+	}
+
+	h1 {
+		color : #43cea2;
+		text-align : center;
+		
+	}
+	
+	h2 {
+		color : red;
+	}
+
+	td {
+		font-size: 25px;
+	}
+
+	sup {
+		font-size: 10pt;
+		color: red;
+		margin-top: 100px;
+	}
+
+	.gender {
+ 		font-size: 18px;
+	}
+
+	input[type=text],textarea, input[type=email],input[type=number],input[type=password] ,select {
+		 width: 100%;
+		  padding: 12px 20px;
+		  margin: 8px 0;
+		  display: block;
+		  border: 1px solid #ccc;
+		  border-radius: 5px;
+		  box-sizing: border-box;
+		  outline: none;
+	}
+
+	label {
+		color: white;
+	}
+
+input[type=submit] {
+  width: 100%;
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #04AA;
+}
+
+input[type=password]:focus{
+    	border: 3px solid #dc2430;
+    }
+    input[type=text]:focus{
+    	border: 3px solid #dc2430;
+    }
+
+    textarea:focus{
+    	border: 3px solid #dc2430;
+    }
+    input[type=email]:focus{
+    	border: 3px solid #dc2430;
+    }
+
+
+div.main {
+  padding: 25px;
+}
+
+.last a {
+			text-decoration: none;
+			font-size: 20px;
+			color: #6dd5ed;
+		}
+
+		.last {
+			/*position: relative;*/
+			
+			/*margin-top: 100px;*/
+		}
+
+		.last a:hover{
+			color: red;
+		}
+
+		#login {
+			text-align: center;
+			color: white;
+		}
+
+		#login a {
+			text-decoration: none;
+			color: #3964c3;
+		}
+
+		#login a:hover{
+			color: #04AA6d;
+			text-decoration: underline;
+		}
+
+		form{
+			border: 3px solid transparent;
+        width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 0px ;
+        box-shadow: 0px 0px 20px 0px gainsboro;
+        border-radius: 10px;
+		}
+		
+		#show {
+			color : white;	
+		}
+</style>
+</head>
+<body>
+	<p class="last"><span><a href="adminlogin.html">Home :: </a></span>
+		<span><a href="about.html">About us</a></span></p>
+	<h1> Regsiter Here! </h1>
+	
+		
+
+		<form action="/RMS/registerAdmin" method="post">
+			<div class="main">
+			<label for="customer name">User Name<sup>*</sup></label>
+			<input type="text" name="username" required placeholder="Enter UserName" class="box">
+
+			<label for="password">Password<sup>*</sup></label>
+			<input type="password" name="password" required placeholder="Enter password" id="myInput" class="box">
+			<p id="show"><input type="checkbox" onclick="myFunction()">Show Password</p>
+
+
+			<label for="eamil">Email<sup>*</sup></label>
+			<input type="email" name="email" required placeholder="Enter your Email" class="box">
+
+			<label for="address">Address<sup>*</sup></label>
+			<textarea name="address" placeholder="Enter your Address(max 200 characters)" required></textarea>
+
+			<label for="mobile">Mobile Number<sup>*</sup></label>
+			<input type="text" name="mobile number" required placeholder="Enter your Mobile Number" class="box" maxlength="10">
+
+			<input type="submit" value="Submit">
+			<p id="login">Already a admin?&nbsp;<a href="adminlogin.html">Log in</a></p>
+			</div>
+		</form>
+	
+
+	
+</body>
+</html>
