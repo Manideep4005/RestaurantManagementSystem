@@ -11,12 +11,12 @@ public class ValidateLogin {
 	static Connection con = null;
 	static PreparedStatement pstmt = null;
 	static ResultSet rs = null;
-	public static boolean login(String userName, String password) {
+	public static boolean login(String userId, String password) {
 		boolean status = false;
 		try {
-			pstmt = DatabaseConnection.getConnection().prepareStatement("select * from admin where username = ? and password = ?");
+			pstmt = DatabaseConnection.getConnection().prepareStatement("select * from admin where user_id = ? and password = ?");
 			
-			pstmt.setString(1, userName);
+			pstmt.setString(1, userId);
 			pstmt.setString(2, password);
 			
 			rs = pstmt.executeQuery();
@@ -44,13 +44,13 @@ public class ValidateLogin {
 		return status;
 	}
 	
-	public static boolean loginCustomer(String customerId, String email) {
+	public static boolean loginCustomer(Integer customerId, String password) {
 		boolean status = false;
 		try {
-			pstmt = DatabaseConnection.getConnection().prepareStatement("select * from customer where customer_id = ? and email = ?");
+			pstmt = DatabaseConnection.getConnection().prepareStatement("select * from customer where customer_id = ? and password = ?");
 			
-			pstmt.setString(1, customerId);
-			pstmt.setString(2, email);
+			pstmt.setInt(1, customerId);
+			pstmt.setString(2, password);
 			
 			rs = pstmt.executeQuery();
 			status = rs.next();

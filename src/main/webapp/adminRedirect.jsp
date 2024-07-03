@@ -83,13 +83,13 @@
 </head>
 <body>
 	<h1>Your are successfully registered! </h1>
-	<p>Login As Admin</p>
+	<p>Login with your Id:- <%= session.getAttribute("adminAccountId") %> and password</p>
 	
 	<div class="upperd">
 			<form class="form" method="post" action="/RMS/adminLogin">
 				<table cellpadding="5px" cellspacing="5px">
 					<tr>
-						<td><input type="text" name="username" class="box" required placeholder="Enter your username"></td>
+						<td><input type="text" name="userid" class="box" required placeholder="Enter your user id" maxlength="5"></td>
 					</tr>
 					<tr>
 						<td>

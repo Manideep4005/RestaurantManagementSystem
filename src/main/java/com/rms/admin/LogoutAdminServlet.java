@@ -11,27 +11,14 @@ import javax.servlet.http.HttpSession;
 public class LogoutAdminServlet extends HttpServlet{
 	public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html");
-		Cookie loginCookie = null;
-		Cookie[] cookies = request.getCookies();
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("username")) {
-					loginCookie = cookie;
-					System.out.println(cookie.getValue() + " Logged out");
-					break;
-				}
-			}
-		}
+		 
 		
-//		HttpSession session = request.getSession(false);
-//		System.out.println(session.getAttribute("username"));
-//		if (session != null)
-//			session.invalidate();
+		HttpSession session = request.getSession(false);
+		session.removeAttribute("adminId");
+		if (session != null)
+			session.invalidate();
 		
-		if (loginCookie != null) {
-			loginCookie.setMaxAge(0);
-			response.addCookie(loginCookie);
-		}
-		response.sendRedirect("adminlogin.html");
+		 
+		response.sendRedirect("adminlogin.jsp");
 	}
 }

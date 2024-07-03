@@ -35,7 +35,7 @@ public class MemberBean implements Serializable {
 		try {
 			con = DatabaseConnection.getConnection();
 			stmt = con.createStatement();
-			rs = stmt.executeQuery("select * from members");
+			rs = stmt.executeQuery("select * from members order by join_date desc");
 			mList = new ArrayList<MemberBean>();
 			
 			while (rs.next()) {

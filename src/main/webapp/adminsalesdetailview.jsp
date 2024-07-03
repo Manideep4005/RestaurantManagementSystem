@@ -94,7 +94,6 @@
 
 	span a:hover {
 		color: /*brown*/#87cf0c;
-		text-decoration: underline;
 		text-decoration-color: /*limegreen*/#35f50a;
 	}
 
@@ -109,19 +108,19 @@
 	
 	.customer a{
 		float: right;
-		border: 1px solid black;
+		border: 1px solid transparent;
 		padding: 8px;
-		background-color: #4287f5;
-		border-radius: 1rem;
+		border-radius: 3px;
 		color: antiquewhite;
 		cursor: pointer;
 		transition: 0.4s;
+		box-shadow: 0px 0px 0px 1px #4287f5;
 	}
 
 	.customer a:hover {
 		text-decoration: none;
-		color: crimson;
-		background-color: #17ee69;
+		color: white;
+		box-shadow: 0px 0px 0px 1px orange;
 	}
 	
 	#order {

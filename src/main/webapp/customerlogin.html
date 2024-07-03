@@ -106,16 +106,23 @@
 			padding: 12px 20px;
 			margin: 8px 0;
 			/*box-sizing: border-box;*/
-			border-radius: 10.5px;
+			border-radius: 5px;
 			/*border: 3px solid #ccc;
 			border-radius: 4px;
 			border-style: outset;
 			border-color: grey;*/
-			border-bottom-color: #B6B3B2;
-			border-left-color: #B6B3B2;
-			border-color: #B6B3B2;
+			border: 2px solid peachpuff;
+			outline: none;
 		}
-
+		
+		input[type=text]:focus {
+			border: 2px solid deepskyblue;
+		}
+		
+		input[type=email]:focus {
+			border: 2px solid deepskyblue;
+		}
+		
 		#button {
 			width: 120%;
 			border-style: none;
@@ -158,6 +165,8 @@
 
 		hr {
 			background-color: #B6B3B2;
+			border-width: 0;
+			height: 1px;
 		}
 
 		.last a {

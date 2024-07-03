@@ -1,334 +1,421 @@
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="com.rms.sales.SalesBean"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="com.dbutil.DatabaseConnection"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.PreparedStatement"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    
-<%
-	////String user = null;
-	//if(session.getAttribute("customerId") == null) {
-	//	response.sendRedirect("customerlogin.html");
-	//} else 
-	//	user = (String) session.getAttribute("customerId");
-	
-	String userID = null;
-	String sessionID = null;
-	Cookie[] cookies = request.getCookies();
-	if (cookies != null) {
-		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals("customerId"))
-				userID = cookie.getValue();
-			
-			if (cookie.getName().equals("JSESSIONID"))
-				sessionID = cookie.getValue();
-		}
-	}
-	
-	if (userID == null) {
-		response.sendRedirect("customerlogin.html");
-	}
-	
-	
-	
-		
-%>
-<% 
-	// JDBC CODE TO GET THE NAME OF THE USER USING CUSTOMER ID
-	PreparedStatement pstmt = null;
-	ResultSet rs = null;
-	String customerName = null;
-	//String gender = null;
-	//String male = "Mr.  ";
-	//String female = "Mrs.  ";
-	//String Other = "";
-	
-	pstmt = DatabaseConnection.getConnection().prepareStatement("select customer_name,gender from customer  where customer_id=?");
-	pstmt.setString(1, userID);
-	
-	rs = pstmt.executeQuery();
-	
-	while (rs.next()) {
-		customerName = rs.getString("customer_name");
-		//gender = rs.getString("gender");
-	}
-	
-	//customerName = customerName.toUpperCase();
-	
-	//if (gender.equals("male")) {
-		//customerName = male + customerName;
-	//} else if (gender.equals("female")) {
-	//	customerName = female + customerName;
-	//} else {
-		
-	//}
-	
-/*	switch(gender) {
-	case "male" :
-		customerName = male + customerName;
-		break;
-		
-	case "female" : 
-		customerName = female +  customerName;
-		break;
-		
-		default:
-			customerName = Other + customerName;
-	}
-	*/
-	
-%>
-
-<% 
-	Connection con = null;
-	Statement stmt = null;
-	
-	con = DatabaseConnection.getConnection();
-	stmt = con.createStatement();
-	rs = stmt.executeQuery("select * from menu");
-	
-	
-%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>::~~ WELCOME ~~::</title>
-<link rel="icon" type="image/png" href="C:/Users/Manideep/Desktop/restuarant.png">
+<title>Customer Menu | RMS</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
 
 <style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
 
-	body {
-		background-color: #2e2d2d;
-	}
-	span {
-		font-size: 18px;
-		color: mediumorchid;
-	}
+body {
+	background-image: #fffff7;
+	font-family: 'Poppins', sans-serif;
+}
 
-	a {
-		/*float: right;*/
-		color: crimson;
-		font-size: 18px;
-		text-decoration: none;
-	}
+.header {
+	box-shadow: 0 0 10px gainsboro;
+	padding: 10px;
+}
 
-	a:hover {
-		color: /*brown*/#35f50a;
-		text-decoration: underline;
-		text-decoration-color: /*limegreen*/#87cf0c;
-	}
+h1 {
+	font-size: 18px;
+	color: #4e9c79;
+}
 
-	.heading {
-		
-		text-align: center;
-		color : orange;
-		font-size: 25px;
-		font-family:'Copperplate Gothic';
-		/*margin: 0 auto;*/
-	}
+#navs {
+	margin: 10px 10px;
+	font-size: 18px;
+}
 
+#navs a {
+	text-decoration: none;
+	color: dodgerblue;
+	margin-top: 10px;
+	transition: .4s;
+}
+
+#navs a:hover {
+	color: #3de397;
+}
+
+.error {
+	color: red;
+	padding: 10px;
+	background: #fa9b9b;
+	border: 1px solid red;
+}
+
+.openbtn {
+	display: inline-block;
+	font-size: 20px;
+	background-color: #3de3d7;
+	border: none;
+	padding: 10px 15px;
+	cursor: pointer;
+	color: white;
+	border-radius: 5px;
+	outline: none;
+	transition-duration: 0.4s;
+}
+
+.openbtn:hover {
+	background-color: dodgerblue;
+	color: white;
+}
+
+.username {
+	float: right;
+	font-size: 18px;
+	padding: 8px 15px;
+}
+
+.fa-user {
+	font-size: 25px;
+}
+
+.sidebar {
+	height: 100%;
+	width: 0;
+	position: fixed;
+	background-color: rgba(255, 255, 255, 0.2);
+	top: 0;
+	left: 0;
+	z-index: 1;
+	overflow-x: hidden;
+	transition: margin-left, margin-right, 0.6s;
+	padding-top: 20px;
+	box-shadow: 0 0 10px gray;
+	backdrop-filter: blur(10px);
+}
+
+.sidebar a {
+	padding: 10px 10px 10px 40px;
+	text-decoration: none;
+	font-size: 18px;
+	color: black;
+	display: block;
+	text-align: left;
+	margin: auto;
+	transition: 0.3s;
+	font-weight: 500;
+}
+
+.sidebar a:hover {
+	color: gray;
+}
+
+.sidebar .closebtn {
+	top: 0;
+	font-size: 25px;
+	margin-left: 200px;
+	right: 10px;
+	left: 0;
+	transition-duration: 0.4s;
+}
+
+.sidebar .closebtn:hover {
+	color: red;
+}
+
+hr {
+	width: 200px;
+	display: block;
+	margin-left: 35px;
+	border: 1px solid gray;
+	margin: 30px;
+}
+
+#logout {
+	transition-duration: .4s;
+}
+
+#logout:hover {
+	color: red;
+}
+
+.container {
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	position: absolute;
+	padding: 10px;
+	border-radius: 5px;
+	box-shadow: 0 0 5px gainsboro;
+}
+
+.scroll {
+	overflow-y: scroll;
+	height: 410px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.scroll {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.scroll::-webkit-scrollbar {
+	display: none;
+}
+
+table {
+	margin-left: auto;
+	margin-right: auto;
+	border-spacing: 0;
+	border-collapse: collapse;
+	width: 500px;
+}
+
+th {
+	padding: 10px 10px;
+	font-size: 18px;
+	background-color: #f1f1f1;
+	border: 1px solid #ccc;
+	text-align: left;
+	top: -1px;
+	position: sticky;
+}
+
+td {
+	text-align: left;
+	padding: 13px;
+	font-size: 18px;
+	border: 1px solid #ccc;
+}
+
+
+#add {
 	
+	text-decoration: none;
+	color: white;
+	background: dodgerblue;
+	transition: .4s;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+#add:hover {
+	background: #3de397;
+}
+
+#add:active {
+	background: red;
+}
+
+
+tr:nth-child(odd) {
+	background: #f1f9f9;
+}
+
+tr:hover {
+	background: #f1f9f9;
+}
+
+
+.cart_view {
+	display:flex;
+	width: 500px;
+	margin-top: 15px;
+	justify-content: space-between;
+	padding: 10px;
+	background: wheat;
+	border-radius: 5px;
+}
+
+.cart1 p {
+	padding: 10px;
+}
+
+
+.cart2 button {
+	padding: 10px;
+	color: white;
+	outline: none;
+	border: none;
+	background: #3de397;
+	transition: .4s;
+	border-radius: 5px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.cart2 button:hover {
+	background: dodgerblue;
+}
+
+
+
+
+
+@media screen and (max-width:600px) {
 	
-	.menu table {
-		border-spacing : 5px 10px;
+	table {
+		width: 300px;
 	}
 
-	.menu th {
-	  background-color: #4287f5;
-	  color: white;
-	  width: 150px;
-	  text-align: center;
-	  border: 1px solid transparent;
-	  padding: 5px;
-	  font-size: 18px;
-	  border-radius: 5px;
+	.cart_view {
+		width: 300px;
 	}
 
-	.menu td {
-	  width: 150px;
-	  text-align: center;
-	  border: 1px solid transparent;
-	  padding: 5px;
-	  background-color: /*42cbf5*/#f2eded;
-	  color: forestgreen;
-	  font-size: 18px;
-	  border-radius: 5px;
-	}
-
-	h2 {
-	  color: #4287f5;
-	}
-
-	.menu td:hover {
-		/*background-color: lightcoral;*/
-		color: #eb0c0c;
+	.cart1 {
 	}
 	
-	#cname {
-		color : mintcream;
-		font-family:'Copperplate Gothic';
-		font-size: 25px;
-		
+	.cart2 {
+		width: 60px;
 	}
-	.customer a{
-		float: right;
-		border: 1px solid transparent;
-		padding: 5px;
-		background-color: transparent;
-		box-shadow: 0px 0px 0px 1px grey;
-		border-radius: 1rem;
-		color: antiquewhite;
-	}
-	
-	.cdetail a {
-		float: right;
-		border: 1px solid transparent;
-		padding: 5px;
-		background-color: transparent;
-		box-shadow: 0px 0px 0px 1px honeydew;
-		border-radius: 2px;
-		color: antiquewhite;
-		transition: 0.3s;
-		cursor:pointer;
-	}
-	
-	.customer a:hover {
-		text-decoration: none;
-		color:white;
-		box-shadow: 0px 0px 0px 1px #f27507;
-	}
-	
-	.cdetail a:hover {
-		text-decoration: none;
-		color:white;
-		box-shadow: 0px 0px 0px 1px #f27507;
-	}
-
-	#order {
-		color: orange;
-		/*text-align: center;*/
-		font-size: 18px;
-		
-	}
-.menu  {
-		
-		margin-left: 200px;
-			justify-content: center;
-			
-			align-items: center;
-			text-align: center;
-			
-			display: inline-block;
-			/*border: 1px solid red;*/
-			padding: 1rem 1rem;
-			vertical-align: middle;
-	}
-	.order {
-		fjustify-content: center;
-			/*padding: 10px;*/
-			align-items: center;
-			text-align: center;
-			
-			display: inline-block;
-			/*border: 1px solid red;*/
-			padding: 1rem 1rem;
-			vertical-align: middle;
-			margin-top: 100px;	
-			float: right;
-			margin-right: 200px;
-			box-shadow: 0px 0px 20px 0px white;
-			border-radius: 13px; 
-	}
-
-	.order table {
-		border-collapse: separate;
-		border-spacing: 10px 10px ;
-		margin-right: auto;
-		margin-left: auto;
-	}
-
-	input[type=text] {
-		  padding: 10px 10px;
-		  
-
-		  border: 1px solid #ccc;
-		  border-radius: 5px;
-		  box-sizing: border-box;
-		  /*border-color: red;*/
-	}
-
-	input[type=submit] {
-		width: 100%;
-		background-color: #04AA6D;
-		color: white;
-		padding: 10px 10px;
-		margin: 1px auto;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-		}
-
-	input[type=submit]:hover {
-		background-color: #04AA;
-	}
-
-	
-	
+}
 </style>
+
 </head>
 <body>
-	<span><a href="customermenu.jsp">Home</a> ::</span>
-	<span><a href="/RMS/customerLogout"> Log out </a>::</span>
-	<span><a href="/RMS/customerAbout.jsp">About us</a></span>
-	<span class="cdetail"><a href="customerdetails.jsp">My Account</a></span>
-	<!--  <span class="customer"><a href="customersalesview.jsp">Order History</a></span>-->
-	<p class="heading">WELCOME <span id="cname"><%=customerName %></span> TO RMS MENU</p>
-	<div class="menu">
-	<table >
-		<tr>
-			<th>Product ID</th><th>product name</th><th>price</th>
 
-		</tr>
-		<%
-			while(rs.next()) {
-				out.println("<tr>");
-				out.println("<td>" + rs.getInt("product_id") + "</td>");
-				out.println("<td>" + rs.getString("product_name") + "</td>");
-				out.println("<td>" + rs.getDouble("price") + "</td>");
-				out.println("</tr>");
-			}
-		%>
-	</table>
+
+
+	<div class="header">
+		<nav>
+			<button class="openbtn" onclick="openNav()">
+				<i class="fa fa-bars"></i>
+			</button>
+
+			<p class="username">
+				<i class="fa fa-user"></i>&nbsp;&nbsp;${customername }
+			</p>
+		</nav>
 	</div>
-	<div class="order">
-		
-		<form method="post" action="customerorder.jsp">
-		<p id="order">Order Here</p>
+
+	<div class="sidebar" id="sidebar">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i
+			class="fa fa-close"></i></a> <a href="customer.jsp"><i
+			class="fa fa-home"></i>&nbsp;&nbsp;Home</a> <a href="javasript::void(0)"><i
+			class="fa fa-info"></i>&nbsp;&nbsp;About us</a> <a
+			href="javasript::void(0)"><i class="fa fa-phone"></i>&nbsp;&nbsp;Contact
+			us</a>
+		<hr />
+
+		<a href="javascript:void(0)">My Id: ${customerId}</a> <a
+			href="CustomerViewDetails">My Profile</a>
+
+		<hr>
+
+		<a href="CustomerViewOrders">My Orders</a>
+		<a href="CustomerViewCartItems">Cart (${cartItems })</a>
+
+		<hr />
+		<a href="/RMS/customerLogout" id="logout">Logout</a>
+	</div>
+
+
+	<div class="container">
+
+
+		<div class="scroll">
+
 			<table>
+
 				<tr>
-					<td ><input type="text" name="id" required placeholder="Enter product id"></td>
-					
+					<th>Item</th>
+					<th>Price</th>
+					<th>Cart</th>
 				</tr>
-				<tr>
+
+				<c:forEach items="${customermenu }" var="menu">
 					
-					<td class="select">
-						<input type="text" name="quantity" required placeholder="Enter quantity"></td>
+					<tr>
+						
+						<td>${menu.productName }</td>
+						<td>${menu.price }</td>
+						<td><a href="CustomerAddItem?item=${menu.productId }" id="add">add</a></td>
+					</tr>
 					
-					
-				</tr>
-				<tr>
-					
-					
-					<td><input type="submit" name="" value="Order"></td>
-				</tr>
+				</c:forEach>
+
 			</table>
-		</form>
+
+		</div>
+		
+		<div class="cart_hr"></div>
+		
+		<c:choose>
+		
+			<c:when test="${customerCartItems == 1}">
+				
+				<div class="cart_view">
+		
+					<div class="cart1">
+						<p>Total ${customerCartItems } item added</p>
+					</div>
+			
+					<div class="cart2">
+						<form action="CustomerViewCartItems">
+							<button type="submit">View</button>
+						</form>
+					</div>
+			
+				</div>
+			
+			</c:when>
+			
+			<c:when test="${customerCartItems > 1}">
+				
+				<div class="cart_view">
+		
+					<div class="cart1">
+						<p>Total ${customerCartItems } items added</p>
+					</div>
+			
+					<div class="cart2">
+						<form action="CustomerViewCartItems">
+							<button type="submit">View</button>
+						</form>
+					</div>
+			
+				</div>
+			
+			</c:when>
+			
+			<c:otherwise></c:otherwise>
+			
+		</c:choose>
+		
 	</div>
+
+
+
+
+
+
+
+
+
+	<script>
+		function openNav() {
+			document.getElementById('sidebar').style.width = '300px';
+		}
+
+		function closeNav() {
+			document.getElementById('sidebar').style.width = '0';
+		}
+
+		document.addEventListener('keydown', function(e) {
+			console.log(e.key);
+
+			// check the key is 'Escape'
+			if (e.key === 'Escape') {
+				document.getElementById('sidebar').style.width = '0';
+			}
+		});
+	</script>
 </body>
 </html>

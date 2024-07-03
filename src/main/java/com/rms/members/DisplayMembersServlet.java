@@ -8,11 +8,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class DisplayMembersServlet extends HttpServlet {
 	public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		MemberBean m = new MemberBean();
 		ArrayList<MemberBean> mList = new ArrayList<>();
+		
+		HttpSession session = request.getSession();
 		
 		try {
 			mList = m.getMembers();
@@ -20,9 +23,8 @@ public class DisplayMembersServlet extends HttpServlet {
 			response.sendRedirect(e.toString());
 		}
 		
-		request.setAttribute("mlist", mList);
+		session.setAttribute("mList", mList);
 		
-		RequestDispatcher rd = request.getRequestDispatcher("adminMembers.jsp");
-		rd.forward(request, response);
+		response.sendRedirect("adminMembers.jsp");
 	}
 }

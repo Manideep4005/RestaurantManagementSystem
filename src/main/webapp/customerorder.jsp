@@ -1,358 +1,467 @@
-<%@page import="javax.xml.crypto.Data"%>
-<%@page import="java.util.Random"%>
-<%@page import="com.dbutil.CurrentDate"%>
-<%@page import="java.sql.Date"%>
-<%@page import="com.dbutil.DatabaseConnection"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.PreparedStatement"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-
-<%
-	String userId = null;
-	Cookie[] cookies = request.getCookies();
-	if (cookies != null) {
-		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals("customerId"))
-				userId = cookie.getValue();
-			}
-	}
-	
-	
-	
-	Date date = CurrentDate.getCurrentDate();
-	
-	//out.println(date);
-	
-%>
-
-<%
-	//Random random = new Random();
-	//int invoice = random.nextInt(100001);
-	
-	
-    String numbers = "1234567890";
-
-    // combine all strings
-    String alphaNumeric =  numbers;
-
-    // create random string builder
-    StringBuilder sb = new StringBuilder();
-
-    // create an object of Random class
-    Random random = new Random();
-
-    // specify length of random string
-    int length = 5;
-
-    for(int i = 0; i < length; i++) {
-
-      // generate random index number
-      int index = random.nextInt(alphaNumeric.length());
-
-      // get character specified by index
-      // from the string
-      char randomChar = alphaNumeric.charAt(index);
-
-      // append the character to string builder
-      sb.append(randomChar);
-    }
-
-    String invoice = "M-" + sb.toString();
-   
-    
-    //-----------------------------------------------------------------------------//
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    String customerName = null;
-    int customer_id = 0;
-    
-    pstmt = DatabaseConnection.getConnection().prepareStatement("select customer_id,customer_name,gender from customer  where customer_id=?");
-	pstmt.setString(1, userId);
-	
-	rs = pstmt.executeQuery();
-	
-	while (rs.next()) {
-		customer_id = rs.getInt("customer_id");
-		customerName = rs.getString("customer_name");
-	}
-	
-	
-%>
-
-<%
-	// Inserted to sales.
-	int pid = Integer.parseInt(request.getParameter("id"));
-	int qty =	Integer.parseInt(request.getParameter("quantity"));
-	
-	pstmt = DatabaseConnection.getConnection().prepareStatement("insert into sales values (?, ?, ?)");
-	pstmt.setInt(1, customer_id);
-	pstmt.setDate(2, date);
-	pstmt.setInt(3, pid);
-	
-	int n = pstmt.executeUpdate();
-	
-	if (n > 0){
-	System.out.println("inserted into sales");
-	}
-	else {
-		
-	}
-%>
-
-<%
-	String pName = null;
-	double price = 0;
-	pstmt = DatabaseConnection.getConnection().prepareStatement("select product_name,price from menu where product_id = ?");
-	pstmt.setInt(1, pid);
-	
-	rs = pstmt.executeQuery();
-	
-	while (rs.next()) {
-		pName = rs.getString("product_name");
-		price = rs.getDouble("price");
-	}
-	
-	double subtotal = price * qty;
-	double tax = 0;
-	if (subtotal < 1000) {
-		tax = 2.5;
-	}
-	else if (subtotal >= 1000 && subtotal <= 2000) {
-		tax = 3.4;
-	}
-	else if (subtotal > 2000) {
-		tax = 4.7;
-	}
-	
-	
-	double total = subtotal + ((subtotal * tax/100));
-%>
-
-
-<%
-	pstmt = DatabaseConnection.getConnection().prepareStatement("insert into invoice values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-	pstmt.setInt(1, customer_id);
-	pstmt.setString(2, customerName);
-	pstmt.setInt(3, pid);
-	pstmt.setString(4, pName);
-	pstmt.setDouble(5, price);
-	pstmt.setInt(6, qty);
-	pstmt.setDouble(7, tax);
-	pstmt.setDouble(8, total);
-	pstmt.setDate(9, date);
-	pstmt.setString(10, invoice);
-	
-	int a = pstmt.executeUpdate();
-	if (a > 0) {
-		System.out.println("Inserted into invoice");
-	}
-	else {
-		
-	}
-	
-%>
-    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@include file="customersessionvalidate.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Receipt Invoice</title>
-
-	<style type="text/css">
-		body {
-			background-color: wheat;
-		}
-
-		.card{
-			margin-left: auto;
-			margin-right: auto;
-			border: 1px solid transparent;
-			background-color: white;
-			/*border-bottom-left-radius: 10px;
-			border-bottom-right-radius: 10px;
-			box-shadow:0px 1px 0px 0px black;*/
-			/*height: 500px;*/
-			/*border-spacing: 10px 10px;*/
-			width: 800px;
-			/*height: 500px;*/
-		}
-
-		.h {
-			margin-left: auto;
-			margin-right: auto;
-			text-align: center;
-			border: 1px solid transparent;
-			background-color: #28282B;
-			border-top-left-radius: 10px;
-			border-top-right-radius: 10px;
-			/*box-shadow:0px 1px 1px 0px black;*/
-			width: 800px;
-		}
-
-		.h p{
-			color: white;
-			font-size: 20px;
-		}
-
-		.card table {
-			margin-right: 50px;
-			margin-left: 50px;
-			border-collapse: separate;
-			/*border-spacing: 3px;*/
-		
-		/*border: 1px solid darkred;*/
-		
-			/*margin-top: 0px;*/
-		}
-
-		
-		
-		
-
-		#id1 {
-			margin-top: 10px auto;
-
-			float: right;
-			margin-right: 20px;
-		}
-
-		#date {
-			float: right;
-			margin-right: 20px;
-			font-size: 16px;
-		}
-
-		#name {
-			margin-top: 10px;
-			margin-left: 20px;
-			font
-		}
-
-		#address {
-			margin-left: 120px;
-			margin-top: 0;
-			font-size: 12px;
-		}
+<title>Invoice | RMS</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
 
-		.card th {
-		/*border: 1px solid ;*/
-		
-		width: 200px;
-		font-size: 15px;
-		text-align: center;
-		padding: 3px;
-		background-color: black;
-		color: white;
-		
+<style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
 
-	}
+body {
+	background-image: #fffff7;
+	font-family: 'Poppins', sans-serif;
+}
 
-	.card td {
-		/*border: 1px solid ;*/
-		
-		width: 200px;
-		font-size: 15px;
-		text-align: center;
-		padding: 3px;
-		background-color: #d9d9d9;
-		color: black;
-		
+.header {
+	box-shadow: 0 0 10px gainsboro;
+	padding: 10px;
+}
 
-	}
+h1 {
+	font-size: 18px;
+	color: #4e9c79;
+}
+
+#navs {
+	margin: 10px 10px;
+	font-size: 18px;
+}
+
+#navs a {
+	text-decoration: none;
+	color: dodgerblue;
+	margin-top: 10px;
+	transition: .4s;
+}
+
+#navs a:hover {
+	color: #3de397;
+}
+
+.error {
+	color: red;
+	padding: 10px;
+	background: #fa9b9b;
+	border: 1px solid red;
+}
+
+.openbtn {
+	display: inline-block;
+	font-size: 20px;
+	background-color: #3de3d7;
+	border: none;
+	padding: 10px 15px;
+	cursor: pointer;
+	color: white;
+	border-radius: 5px;
+	outline: none;
+	transition-duration: 0.4s;
+}
+
+.openbtn:hover {
+	background-color: dodgerblue;
+	color: white;
+}
+
+.username {
+	float: right;
+	font-size: 18px;
+	padding: 8px 15px;
+}
+
+.fa-user {
+	font-size: 25px;
+}
+
+.sidebar {
+	height: 100%;
+	width: 0;
+	position: fixed;
+	background-color: rgba(255, 255, 255, 0.2);
+	top: 0;
+	left: 0;
+	z-index: 1;
+	overflow-x: hidden;
+	transition: margin-left, margin-right, 0.6s;
+	padding-top: 20px;
+	box-shadow: 0 0 10px gray;
+	backdrop-filter: blur(10px);
+}
+
+.sidebar a {
+	padding: 10px 10px 10px 40px;
+	text-decoration: none;
+	font-size: 18px;
+	color: black;
+	display: block;
+	text-align: left;
+	margin: auto;
+	transition: 0.3s;
+	font-weight: 500;
+}
+
+.sidebar a:hover {
+	color: gray;
+}
+
+.sidebar .closebtn {
+	top: 0;
+	font-size: 25px;
+	margin-left: 200px;
+	right: 10px;
+	left: 0;
+	transition-duration: 0.4s;
+}
+
+.sidebar .closebtn:hover {
+	color: red;
+}
+
+hr {
+	width: 200px;
+	display: block;
+	margin-left: 35px;
+	border: 1px solid gray;
+	margin: 30px;
+}
+
+#logout {
+	transition-duration: .4s;
+}
+
+#logout:hover {
+	color: red;
+}
+
+.container {
+	top: 54%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	position: absolute;
+	border-radius: 10px;
+}
+
+.scroll {
+	overflow-y: scroll;
+	height: 250px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 500px;
+	background: #f9f9f9;
+}
+
+.scroll {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.scroll::-webkit-scrollbar {
+	display: none;
+}
+
+table {
+	margin-left: auto;
+	margin-right: auto;
+	border-spacing: 0;
+	border-collapse: collapse;
+	width: 450px;
+}
+
+th {
+	padding: 10px 10px;
+	font-size: 18px;
+	border: 1px solid #ccc;
+	border-top-color: transparent;
+	border-bottom-color: black;
+	border-left-color: transparent;
+	border-right-color: transparent;
+	background: #f9f9f9;
+	text-align: left;
+	top: -1px;
+	position: sticky;
+}
+
+td {
+	text-align: left;
+	padding: 8px;
+	font-size: 18px;
+}
 
 
-	#amount {
-		float: right;
-		/*text-align: right;*/
-		margin-right: 90px;
-		margin-top: 10px;
-	}
 
-	#tax {
-		margin-top: 50px;
-		text-align: right;
-		margin-right: 90px;
+
+
+
+
+.heading {
+	width: 500px;
+	background: orange;
+	padding: 10px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px; 
+}
+
+.heading p{ 
+	color: white;
+	text-align: center;
+	font-size: 18px;
+}
+
+
+.footer {
+	padding: 10px;
+	width: 500px;
+	background: #ccc;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.footer p {
+	text-align: center;
+	font-size: 18px;
+	
+}
+
+.card {
+	display: flex;
+	padding: 10px;
+	justify-content: space-between;
+	background: #f9f9f9;
+}
+
+.prices {
+padding: 10px;
+width: 500px;
+background: #f9f9f9;
+}
+
+.prices p{
+	text-align: right;
+}
+
+#line {
+	border: 1px solid grey;
+	width: 100px;
+	
+	margin: 5px 0;
+	margin-left: 380px;
+}
+
+
+
+
+@media screen and (max-width:600px) {
+	
+	table {
+		width: 310px;
 	}
 	
-	#total {
-
-		/*float: right;*/
-		/*text-align: right;*/
-		margin-right: 55px;
-		margin-left: 610px;
-		background-color: orange;
-		padding: 5px;
+	.scroll {
+		width: 320px;
+	}	
+	
+	.prices {
+		width: 320px;
 	}
-
+	
 	.footer {
-		margin-left: auto;
-		margin-right: auto;
-		text-align: center;
-		border: 1px solid transparent;
-		background-color: #28282B;
-		width: 800px;
-		border-bottom-right-radius: 10px;
-		border-bottom-left-radius: 10px;
-		/*box-shadow:0px 10px 10px 0px rebeccapurple;*/
-	}
-
-	.footer p{
-		color: goldenrod;
+		width: 320px;
 	}
 	
-	#home {
+	#line {
+		margin-left: 200px;
+	}
+	
+	.heading {
+		width: 320px;
+	}
+	
+	.container {
+		top: 50%;
 		
-		text-align: center;
-		text-decoration: none;
 	}
+}
 
-	#home a{
-		text-decoration: none;
-		color: black;
+.back {
+	width: 100px;
+	padding: 5px;
+	margin: auto;
+}
 
-	}
-	</style>
+.back a {
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	color: #3de397;
+	border: 2px solid #3de397;
+	transition: .4s;
+	padding: 5px;
+}
+
+
+.back a:hover {
+color: white;
+	background: #3de397;
+}
+
+</style>
+
 </head>
 <body>
 
-	<div class="h">
-		<p>INVOICE</p>
+
+
+	<div class="header">
+		<nav>
+			<button class="openbtn" onclick="openNav()">
+				<i class="fa fa-bars"></i>
+			</button>
+
+			<p class="username">
+				<i class="fa fa-user"></i>&nbsp;&nbsp;${customername }
+			</p>
+		</nav>
 	</div>
 
-	<div class="card">
-		
-		<span id="name">INVOICE TO: <b><%=customerName %></b></span>
-		<span id="id1">INVOICE ID#: <b><%=invoice %></b> </span>
-		<p id="address">Main Road,<span id="date">DATE: <b><%=date %></b></span><br>L.B NAGAR<br>HYDERABAD-079.</p>
+	<div class="sidebar" id="sidebar">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i
+			class="fa fa-close"></i></a> <a href="customer.jsp"><i
+			class="fa fa-home"></i>&nbsp;&nbsp;Home</a> <a href="javasript::void(0)"><i
+			class="fa fa-info"></i>&nbsp;&nbsp;About us</a> <a
+			href="javasript::void(0)"><i class="fa fa-phone"></i>&nbsp;&nbsp;Contact
+			us</a>
+		<hr />
 
-		<table>
-			<tr>
-				<th>ITEM ID.</th>
-				<th>ITEM NAME</th>
-				<th>PRICE</th>
-				<th>QTY.</th>
-				<th>TOTAL</th>
-			</tr>	
-			<tr>
-				<td><%= pid%></td>
-				<td><%= pName%></td>
-				<td><%= price%></td>
-				<td><%= qty%></td>
-				<td><%= subtotal%></td>
-			</tr>
-		</table>
+		<a href="javascript:void(0)">My Id: ${customerId}</a> <a
+			href="CustomerViewDetails">My Profile</a>
+
+		<hr>
+
+		<a href="CustomerViewOrders">My Orders</a>
+		<a href="customer.jsp">Menu</a>
 		
-		<span id="amount">SUB TOTAL:&nbsp;<b><%=subtotal %></b></span>
-		<p id="tax">TAX:&nbsp;<b><%=tax %>%</b></p>
-		<p id="total">TOTAL:&nbsp;<b><%=total %></b></p>
+
+		<hr />
+		<a href="/RMS/customerLogout" id="logout">Logout</a>
 	</div>
-	<div class="footer">
-		<p>------- THANK YOU -------</p>
+
+
+	<div class="container">
+
+		<div class="heading">
+			<p>Invoice</p>
+		</div>
+		
+		<div class="card">
+		
+			<div class="card1">
+			
+				<p>Invoice To: <b>${customername}</b> <p>
+				
+			</div>
+			<div class="card2">
+				<c:forEach items="${customerInvoice }" var="i">
+				
+					<p> Invoice Id#: <b>${i.invoice_number }</b> </p>
+					<p>Order Date: <b>${i.order_date }</b></p>
+					<p>Order Id: <b>${i.orderId }</b></p>		
+				
+				</c:forEach>
+			</div>
+			
+		</div>
+		
+		
+		<div class="table">
+				
+				<div class="scroll">
+					
+					<table>
+						
+						<tr>
+						
+							<th>Item Name</th>
+							<th>Item Price</th>
+						</tr>
+						
+						
+						<c:forEach items="${customerInvoiceItems}" var="i">
+						
+							<tr>
+							
+								<td>${i.product_name }</td>
+								<td>${i.price }</td>
+						
+							</tr>
+						
+						</c:forEach>
+						
+					</table>
+				
+				</div>
+				
+			</div>
+		
+		
+		
+			<div class="prices">
+			
+				<c:forEach items="${customerInvoice }" var="i">
+				
+					<p>Sub Total : <b>${i.subTotal }</b></p>
+					<p>Tax : <b>${i.tax }</b>(%)</p>
+					<hr id="line" />
+					<p>Total : <b>${i.total }</b></p>
+			
+				</c:forEach>
+			
+			</div>
+		
+		<div class="footer">
+			<p>Thank You</p>
+		</div>
+		
+		<div class="back">
+			<a href="customer.jsp">Back</a>
+		</div>
+
 	</div>
-	<p id="home"><a href="customermenu.jsp">BACK</a></p>
+
+
+
+
+
+
+
+
+	<script>
+		function openNav() {
+			document.getElementById('sidebar').style.width = '300px';
+		}
+
+		function closeNav() {
+			document.getElementById('sidebar').style.width = '0';
+		}
+
+		document.addEventListener('keydown', function(e) {
+			console.log(e.key);
+
+			// check the key is 'Escape'
+			if (e.key === 'Escape') {
+				document.getElementById('sidebar').style.width = '0';
+			}
+		});
+	</script>
 </body>
 </html>
-    

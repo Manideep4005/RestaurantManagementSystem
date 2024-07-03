@@ -1,118 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
-  <display-name>RMS</display-name>
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-  </welcome-file-list>
-  
-  <servlet>
-  	<servlet-name>adminregister</servlet-name>
-  	<servlet-class>com.rms.admin.RegisterAdminServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>adminlogin</servlet-name>
-  	<servlet-class>com.rms.admin.AdminValidateServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>customerview</servlet-name>
-  	<servlet-class>com.rms.customer.DisplayCustomer</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>customerregister</servlet-name>
-  	<servlet-class>com.rms.customer.RegisterCustomerServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>customerlogin</servlet-name>
-  	<servlet-class>com.rms.customer.CustomerValidateServlet</servlet-class>
-  </servlet>
-   <servlet>
-  	<servlet-name>Membercustomerview</servlet-name>
-  	<servlet-class>com.rms.members.DisplayMemberCustomer</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>memberview</servlet-name>
-  	<servlet-class>com.rms.members.DisplayMembersServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>logoutadmin</servlet-name>
-  	<servlet-class>com.rms.admin.LogoutAdminServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>logoutcustomer</servlet-name>
-  	<servlet-class>com.rms.customer.LogoutCustomerServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>salesdisplay</servlet-name>
-  	<servlet-class>com.rms.sales.DisplaySalesServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>adminmenudisplay</servlet-name>
-  	<servlet-class>com.rms.menuadmin.AdminMenuDisplayServlet</servlet-class>
-  </servlet>
-  
-  
-  
-  <!-- Below are the urls -->
-  
-  
-  
-  <servlet-mapping>
-  	<servlet-name>adminregister</servlet-name>
-  	<url-pattern>/registerAdmin</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-  	<servlet-name>adminlogin</servlet-name>
-  	<url-pattern>/adminLogin</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-  	<servlet-name>customerview</servlet-name>
-  	<url-pattern>/displaycustomer</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-  	<servlet-name>customerregister</servlet-name>
-  	<url-pattern>/registercustomer</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-  	<servlet-name>customerlogin</servlet-name>
-  	<url-pattern>/customerlogin</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-  	<servlet-name>Membercustomerview</servlet-name>
-  	<url-pattern>/displaycustomer2</url-pattern>
-  </servlet-mapping>
-  
-   <servlet-mapping>
-  	<servlet-name>memberview</servlet-name>
-  	<url-pattern>/displaymember</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-  	<servlet-name>logoutadmin</servlet-name>
-  	<url-pattern>/adminLogout</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-  	<servlet-name>logoutcustomer</servlet-name>
-  	<url-pattern>/customerLogout</url-pattern>
-  </servlet-mapping>
-  
-   <servlet-mapping>
-  	<servlet-name>salesdisplay</servlet-name>
-  	<url-pattern>/displaysales</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-  	<servlet-name>adminmenudisplay</servlet-name>
-  	<url-pattern>/displayadminmenu</url-pattern>
-  </servlet-mapping>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+	id="WebApp_ID" version="4.0">
+	<display-name>RMS</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>rms.jsp</welcome-file>
+	</welcome-file-list>
+
+	<servlet>
+		<servlet-name>adminregister</servlet-name>
+		<servlet-class>com.rms.admin.RegisterAdminServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>adminlogin</servlet-name>
+		<servlet-class>com.rms.admin.AdminValidateServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>customerview</servlet-name>
+		<servlet-class>com.rms.admin.DisplayCustomer</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>customerregister</servlet-name>
+		<servlet-class>com.rms.customer.RegisterCustomerServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>customerlogin</servlet-name>
+		<servlet-class>com.rms.customer.CustomerValidateServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>Membercustomerview</servlet-name>
+		<servlet-class>com.rms.members.DisplayMemberCustomer</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>memberview</servlet-name>
+		<servlet-class>com.rms.members.DisplayMembersServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>logoutadmin</servlet-name>
+		<servlet-class>com.rms.admin.LogoutAdminServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>logoutcustomer</servlet-name>
+		<servlet-class>com.rms.customer.LogoutCustomerServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>salesdisplay</servlet-name>
+		<servlet-class>com.rms.sales.DisplaySalesServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>adminmenudisplay</servlet-name>
+		<servlet-class>com.rms.menuadmin.AdminMenuDisplayServlet</servlet-class>
+	</servlet>
+
+
+
+	<!-- Below are the urls -->
+
+
+
+	<servlet-mapping>
+		<servlet-name>adminregister</servlet-name>
+		<url-pattern>/registerAdmin</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>adminlogin</servlet-name>
+		<url-pattern>/adminLogin</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>customerview</servlet-name>
+		<url-pattern>/displaycustomer</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>customerregister</servlet-name>
+		<url-pattern>/registercustomer</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>customerlogin</servlet-name>
+		<url-pattern>/customerlogin</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>Membercustomerview</servlet-name>
+		<url-pattern>/displaycustomer2</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>memberview</servlet-name>
+		<url-pattern>/displaymember</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>logoutadmin</servlet-name>
+		<url-pattern>/adminLogout</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>logoutcustomer</servlet-name>
+		<url-pattern>/customerLogout</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>salesdisplay</servlet-name>
+		<url-pattern>/displaysales</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>adminmenudisplay</servlet-name>
+		<url-pattern>/displayadminmenu</url-pattern>
+	</servlet-mapping>
 </web-app>

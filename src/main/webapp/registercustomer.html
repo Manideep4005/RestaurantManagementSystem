@@ -1,134 +1,231 @@
+
+
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Customer Registration</title>
-	<link rel="icon" type="image/png" href="C:/Users/Manideep/Desktop/restuarant.png">
-
-
+<title>RMS Portal</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="icon" type="image/png" href="logo.png">
 <style type="text/css">
-	h1 {
-		color : #04AA;
-		text-align : center;
-		
-	}
-
-
-	td {
-		font-size: 25px;
-	}
-
-	sup {
-		font-size: 10pt;
-		color: red;
-		margin-top: 100px;
-	}
-
-	.gender {
- 		font-size: 18px;
-	}
-
-	input[type=text],textarea, input[type=email],input[type=number],select {
-		 width: 100%;
-		  padding: 12px 20px;
-		  margin: 8px 0;
-		  display: block;
-		  border: 1px solid #ccc;
-		  border-radius: 5px;
-		  box-sizing: border-box;
-	}
-
-
-input[type=submit] {
-  width: 100%;
-  background-color: #04AA6D;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
-input[type=submit]:hover {
-  background-color: #04AA;
+body {
+	background-image: #fffff7;
+	font-family: 'Poppins', sans-serif;
 }
 
-div.main {
-  border-radius: 10px;
-  background-color: #f2f2f2;
-  padding: 20px;
-  border: 1px solid #04AA6D;
-  margin-top: 0 auto;
-  /*position: relative;*/
-  height: 500px;
+.container {
+	top: 55%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	position: absolute;
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #3de397;
+	box-shadow: 0 0 5px limegreen;
 }
 
-.last a {
-			text-decoration: none;
-			font-size: 20px;
-			color: orange;
-		}
+h2 {
+	text-align: center;
+}
 
-		.last {
-			/*position: relative;*/
-			
-			/*margin-top: 100px;*/
-		}
+form {
+	width: 400px;
+	margin: auto;
+	padding: 20px;
+}
 
-		.last a:hover{
-			color: red;
-		}
+input, select, textarea {
+	display: block;
+	margin: 12px 0;
+	width: 100%;
+	outline: none;
+	border: 2px solid #3de397;
+	padding: 12px;
+	border-radius: 5px;
+	transition: .4s;
+	color: black;
+	background: transparent;
+	font-size: 18px;
+}
 
-		#login {
-			text-align: center;
-		}
+textarea {
+	resize: none;
+}
 
-		#login a {
-			text-decoration: none;
-			color: #3964c3;
-		}
+select {
+	color: gray;
+}
 
-		#login a:hover{
-			color: #04AA6d;
-		}
-		
+select option {
+	margin: 40px;
+	background: white;
+	color: gray;
+	text-shadow: red;
+}
+
+input:focus, select:focus, textarea:focus {
+	border-color: #4e9c79;
+}
+
+input:hover, select:hover, textarea:hover {
+	box-shadow: 0 0 10px #3de397;
+}
+
+button {
+	display: block;
+	margin: 12px 0;
+	width: 100%;
+	outline: none;
+	border: 2px solid transparent;
+	padding: 12px;
+	border-radius: 5px;
+	transition: .4s;
+	color: white;
+	background: #3de397;
+	font-size: 18px;
+	cursor: pointer;
+}
+
+button:hover {
+	background: #4e9c79;
+}
+
+p {
+	text-align: center;
+	font-size: 18px;
+}
+
+.create {
+	color: #4e9c79;
+	text-decoration: none;
+	transition: .4s;
+}
+
+.create:hover {
+	color: dodgerblue;
+	padding-left: 10px;
+}
+
+.admin {
+	margin: 12px 0;
+}
+
+#admin {
+	text-decoration: none;
+	color: #4e9c79;
+	transition: .4s;
+	font-size: 18px;
+	background: #3de397;
+	color: white;
+	padding: 10px;
+	border-radius: 5px;
+}
+
+#admin:hover {
+	background: dodgerblue;
+}
+
+.header {
+	display: flex;
+	padding: 20px;
+	box-shadow: 0 0 5px gainsboro;
+	justify-content: space-between;
+}
+
+h1 {
+	font-size: 18px;
+	color: #4e9c79;
+}
+
+#navs {
+	margin: 10px 10px;
+	font-size: 18px;
+}
+
+#navs a {
+	text-decoration: none;
+	color: dodgerblue;
+	margin-top: 10px;
+	transition: .4s;
+}
+
+#navs a:hover {
+	color: #3de397;
+}
+
+.error {
+	color: red;
+	padding: 10px;
+	background: #fa9b9b;
+	border: 1px solid red;
+}
+
+@media screen and (max-width:600px) {
+	form {
+		width: 300px;
+	}
+}
 </style>
+
 </head>
 <body>
-	<p class="last"><span><a href="rms.html">Home :: </a></span>
-		<span><a href="customerAbout.jsp">About us</a></span></p>
-	<h1> Regsiter Here! </h1>
-	<div class="main">
-		
 
-		<form action="/RMS/registercustomer" method="post">
-			<label for="customer name">Customer Name<sup>*</sup></label>
-			<input type="text" name="customer name" required placeholder="Enter your Name" class="box">
+	<div class="header">
 
-			<label for="gender">Gender<sup>*</sup></label>
-			<select name="gender" required>
+		<div class="one">
+			<h1>Welcome to RMS</h1>
+		</div>
+		<div class="two">
+			<span id="navs"><a href="rms.jsp">Home</a></span> <span id="navs"><a
+				href="javasript::void(0)">About us</a></span> <span> <a
+				href="rms.jsp" id="admin">Login</a>
+			</span>
+		</div>
+
+
+	</div>
+
+
+
+
+	<div class="container">
+
+
+
+		<form action="/RMS/registercustomer" method="POST">
+
+			<input type="text" name="customer name" required
+				placeholder="Full Name" class="box"> <select name="gender"
+				required>
 				<option value="">---Select---</option>
 				<option value="male">Male</option>
 				<option value="female">Female</option>
 				<option value="other">Other</option>
-			</select>
+			</select> <input type="email" name="email" required
+				placeholder="Enter your Email" class="box">
+
+			<textarea name="address"
+				placeholder="Enter your Address(max 200 characters)" required></textarea>
+
+			<input type="text" name="mobile number" required
+				placeholder="Enter your Mobile Number" class="box" maxlength="10">
+
+			<input type="text" name="password" required
+				placeholder="Enter password" class="box" maxlength="10">
 
 
-			<label for="eamil">Email<sup>*</sup></label>
-			<input type="email" name="email" required placeholder="Enter your Email" class="box">
 
-			<label for="address">Address<sup>*</sup></label>
-			<textarea name="address" placeholder="Enter your Address(max 200 characters)" required></textarea>
 
-			<label for="mobile">Mobile Number<sup>*</sup></label>
-			<input type="text" name="mobile number" required placeholder="Enter your Mobile Number" class="box" maxlength="10">
+			<button type="submit">Register</button>
 
-			<input type="submit" value="Submit">
-			<p id="login">Already a user?<a href="customerlogin.html"> Log in</a></p>
 		</form>
-	</div>
 
-	
+	</div>
 </body>
 </html>

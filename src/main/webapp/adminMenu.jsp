@@ -1,294 +1,384 @@
-<%@page import="java.util.Iterator"%>
-<%@page import="com.rms.menuadmin.AdminMenuBean"%>
-<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@include file="adminSessionValidate.jsp" %>
 
-    
-    <%
-    	ArrayList<AdminMenuBean> aList = (ArrayList<AdminMenuBean>)request.getAttribute("alist");
-    	Iterator<AdminMenuBean> itr = aList.iterator();
-    	
-    	
-    %>
-    
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Menu details</title>
-<link rel="icon" type="image/png" href="C:/Users/Manideep/Desktop/restuarant.png">
+<title>Menu | RMS</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<link rel="icon" type="image/png" href="logo.png" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
 <style type="text/css">
-	body{
-		background-image: linear-gradient(to right, #bdc3c7, #2c3e50 );
-		
-	}
-
-	.detail {
-		
-		border-spacing: 10px 10px ;
-		
-
-	}
-
-	.detail th {
-	  background-color: #4287f5;
-	  color: white;
-	  width: 150px;
-	  text-align: center;
-	  /*border: 1px solid black;*/
-	  padding: 5px;
-	  font-size: 18px;
-	  border-radius: 5px;
-	}
-
-	.detail td {
-	  width: 150px;
-	  text-align: center;
-	  /*border: 1px solid black;*/	
-	  padding: 5px;
-	  background-color: /*42cbf5*/#f2eded;
-	  color: forestgreen;
-	  font-size: 18px;
-	   border-radius: 5px;
-	}
-
-	.detail td:hover {
-		background-color: #0db9db;
-		border-color: blue;
-		color: black;
-	}
-
-	span {
-		font-size: 18px;
-		color: mediumorchid;
-	}
-
-	span a {
-		/*float: right;*/
-		color: crimson;
-		font-size: 18px;
-		text-decoration: none;
-	}
-
-	span a:hover {
-		color: /*brown*/#87cf0c;
-		text-decoration: underline;
-		text-decoration-color: /*limegreen*/#35f50a;
-	}
-
-	
-
-	#info {
-		text-align: center;
-		color: orange;
-		font-size: 22px;
-		font-family:'Copperplate Gothic';
-	}
-	
-	.customer a{
-		float: right;
-		border: 1px solid transparent;
-		padding: 8px;
-		background-color: transparent;
-		box-shadow: 1px 1px 1px 1px grey;
-		border-radius: 1rem;
-		color: antiquewhite;
-		cursor: pointer;
-		transition: 0.4s;
-	}
-
-	.customer a:hover {
-		text-decoration: none;
-		color: crimson;
-		background-color: ;
-	}
-
-	input[type=submit] {
-  width: 100%;
-  background-color: #04AA6D;
-  color: white;
-  padding: 10px 10px;
-  margin: 1px auto;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
-	input[type=submit]:hover {
-  background-color: #04AA;
-	}
+body {
+	background: #fffff7;
+	font-family: 'Poppins', sans-serif;
+}
 
-	input[type=text] {
-		 width: 100%;
-		  padding: 10px 10px;
-		  margin: 8px auto;
-		  /*display: table;*/
-		  border: 1px solid #ccc;
-		  border-radius: 5px;
-		  box-sizing: border-box;
-		  outline: none;
-	}
-	
-	input[type=text]:focus {
-		 border: 2px solid orange;
-	}
+.header {
+	box-shadow: 0 0 10px gray;
+	padding: 10px;
+	background: #fffff7;
+}
 
-	
-	.first {
-		
-			height: 200px;
-			width: 150px;
-			border-radius: 10px;
-			/*display: flex;*/
-			justify-content: center;
-			/*padding: 10px;*/
-			align-items: center;
-			text-align: center;
-			box-shadow: 0 5px 5px 3px rebeccapurple;
-			/*margin: 50px auto;*/
-			background-color: transparent;
+h1 {
+	font-size: 18px;
+	color: #4e9c79;
+}
 
-			display: inline-block;
-			/*border: 1px solid red;*/
-			padding: 1rem 1rem;
-			vertical-align: middle;
-			margin-right: 10px;
-	}
+#navs {
+	margin: 10px 10px;
+	font-size: 18px;
+}
 
-	.second {
-		
-			height: 150px;
-			width: 150px;
-			border-radius: 10px;
-			/*display: flex;*/
-			justify-content: center;
-			/*padding: 10px;*/
-			align-items: center;
-			text-align: center;
-			box-shadow: 0 5px 5px 3px rebeccapurple;
-			/*margin: 50px auto;*/
-			background-color: transparent;
+#navs a {
+	text-decoration: none;
+	color: dodgerblue;
+	margin-top: 10px;
+	transition: 0.4s;
+}
 
-			display: inline-block;
-			/*border: 1px solid red;*/
-			padding: 1rem 1rem;
-			vertical-align: middle;
-			margin-left: 10px;
-	}
-	.menu {
-		margin-left: 90px;
-			justify-content: center;
-			
-			align-items: center;
-			text-align: center;
-			
-			display: inline-block;
-			/*border: 1px solid red;*/
-			padding: 1rem 1rem;
-			vertical-align: middle;
-			
-	}
-	
-	
-	.parent {
-		/*border: 1px solid black;*/
-		
-			/*display: flex;*/
-			justify-content: center;
-			/*padding: 10px;*/
-			align-items: center;
-			text-align: center;
-			
-			display: inline-block;
-			/*border: 1px solid red;*/
-			padding: 1rem 1rem;
-			vertical-align: middle;
-			margin-top: 70px;
-			float: right;
-			margin-right: 50px;
-	}
+#navs a:hover {
+	color: #3de397;
+}
 
-	
-	
-	.first p{
-		margin-top: 2px ;
-	}
+.error {
+	color: red;
+	padding: 10px;
+	background: #fa9b9b;
+	border: 1px solid red;
+}
 
-	.third p{
-		margin-top: 2px ;
+.openbtn {
+	display: inline-block;
+	font-size: 20px;
+	background-color: dodgerblue;
+	border: none;
+	padding: 10px 15px;
+	cursor: pointer;
+	color: white;
+	border-radius: 5px;
+	outline: none;
+	transition-duration: 0.4s;
+}
+
+.openbtn:hover {
+	background-color: rgb(6, 116, 226);
+	color: white;
+}
+
+.username {
+	float: right;
+	font-size: 18px;
+	padding: 8px 15px;
+}
+
+.fa-user {
+	font-size: 25px;
+}
+
+.sidebar {
+        height: 100%;
+        width: 0;
+        position: fixed; 
+        background-color: rgba(255, 255, 255, 0.5);
+        top: 0;
+        left: 0;
+        z-index: 10;
+        overflow-x: hidden;
+        transition: margin-left, margin-right, 0.6s;
+        padding-top: 20px;
+        box-shadow: 0 0 10px gray;
+        backdrop-filter: blur(10px);
+      }
+
+      .sidebar a {
+      	padding: 10px;
+        text-decoration: none;
+        font-size: 18px;
+        color: black;
+        display: block;
+        text-align: left;
+        margin-left: 40px;
+        transition: 0.3s;
+        font-weight: 500;
+      }
+
+      .sidebar a:hover {
+        color: gray;
+      }
+
+      .sidebar .closebtn {
+        top: 0;
+        font-size: 25px;
+        margin-left: 250px;
+        right: 10px;
+        left: 0;
+        transition-duration: 0.4s;
+      }
+
+      .sidebar .closebtn:hover {
+        color: red;
+      }
+
+      hr {
+        width: 200px;
+        display: block;
+        margin-left: 35px;
+        border: 1px solid gray;
+        margin: 30px;
+      }
+
+      #logout {
+      	border: 2px solid red;
+      	color: red;
+        transition-duration: 0.4s;
+        width: 80px;
+        text-align: center;
+        padding: 10px;
+        margin-left:40px;	
+      }
+
+      #logout:hover {
+        color: white;
+        background: red;
+      }
+	
+	  #profile {
+	  	border: 2px solid dodgerblue;
+      	color: dodgerblue;
+        transition-duration: 0.4s;
+        width: 120px;
+        text-align: center;
+        margin-left:40px;
+	  }
+	  
+	  #profile:hover {
+        color: white;
+        background: dodgerblue;
+      }
+.container {
+	padding: 10px;
+	border-radius: 5px;
+	margin: 20px 0;
+}
+
+.scroll {
+	overflow-y: scroll;
+	height: 410px;
+	margin-left: auto;
+	margin-right: auto;
+	box-shadow: 0 0 10px gray;
+	border-radius: 5px;
+	width: 600px;
+}
+
+.scroll {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.scroll::-webkit-scrollbar {
+	display: none;
+}
+
+table {
+	margin-left: auto;
+	margin-right: auto;
+	border-spacing: 0;
+	border-collapse: collapse;
+	border-radius: 5px;
+	width: 600px;
+}
+
+th {
+	padding: 10px 10px;
+	font-size: 18px;
+	background-color: #f1f1f1;
+	border: 1px solid #ccc;
+	text-align: left;
+	top: -2px;
+	position: sticky;
+}
+
+td {
+	text-align: left;
+	padding: 13px;
+	font-size: 18px;
+	border: 1px solid #ccc;
+}
+
+.new-add {
+	width: 600px;
+	margin:10px auto;
+	padding: 10px 0;
+}
+
+.new-add a {
+	text-decoration: none;
+	border-radius: 5px;
+	color: white;
+	background: dodgerblue;
+	font-size: 17px;
+	transition: .4s;
+	padding: 12px;
+}
+
+.new-add a:hover {
+	background: #168aaa;
+}
+
+#add {
+	text-decoration: none;
+	border-radius: 5px;
+	padding: 2px;
+	color : dodgerblue;
+	transition: .4s;
+	background: white;
+}
+
+#add:hover {
+	color: white;
+	background: dodgerblue;
+}
+
+#delete {
+	text-decoration: none;
+	border-radius: 5px;
+	padding: 2px;
+	color : red;
+	transition: .4s;
+	background: white;
+}
+
+#delete:hover {
+	background: red;
+	color: white;
+}
+
+
+@media screen and (max-width: 600px) {
+	form {
+		width: 300px;
+	}
+	.header {
+		position: sticky;
+		top: 0;
 	}
 	
+	.scroll, table  {
+		width: 330px;
+	}
+	.main {
+		grid-template-columns: auto;
+	}
 	
+	.new-add {
+		width: 330px;
+	}
+}
 </style>
-
-
 </head>
 <body>
-	
-	<span><a href="adminmodule.jsp">Home</a> ::</span>
-	<span><a href="/RMS/adminLogout"> Log out </a>::</span>
-	<span><a href="adminabout.html">About us</a></span>
-	<span class="customer"><a href="/RMS/displaycustomer">customer details</a></span>
-	<p id="info">ADD ITEMS TO MENU</p>
+	<div class="header">
+		<nav>
+			<button class="openbtn" onclick="openNav()">
+				<i class="fa fa-bars"></i>
+			</button>
 
-	<div class="menu">
-		<table class="detail">
-		<tr>
-			<th>Product ID</th><th>Product Name</th><th>Price</th>
-		</tr>
-		<%
-		while (itr.hasNext()){
-			AdminMenuBean aBean = itr.next();
-			
-			out.println("<tr>");
-			out.println("<td>" + aBean.getProductId() +"</td>");
-			out.println("<td>" + aBean.getProductName() +"</td>");
-			out.println("<td>" + aBean.getPrice() +"</td>");
-			out.println("</tr>");
+			<p class="username">
+				<i class="fa fa-user"></i>&nbsp;&nbsp;${adminName }
+			</p>
+		</nav>
+	</div>
+
+	<div class="sidebar" id="sidebar">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i
+			class="fa fa-close"></i></a> <a href="adminmodule.jsp"><i
+			class="fa fa-home"></i>&nbsp;&nbsp;Home</a> <a href="javasript::void(0)"><i
+			class="fa fa-info"></i>&nbsp;&nbsp;About us</a> <a
+			href="javasript::void(0)"><i class="fa fa-phone"></i>&nbsp;&nbsp;Contact
+			us</a>
+		<hr />
+
+		<a href="javascript:void(0)">My Id: ${adminId}</a> <a href="AdminDetailsServlet" id="profile">My
+			Profile</a>
+ <hr/>
+	  
+	  <a href="/RMS/displaycustomer">Customer</a>
+      <a href="AdminNewSalesDisplay"  >Sales</a>
+      <a href="/RMS/displaymember">Members</a>
+      <a href="/RMS/displayadminmenu" >Menu</a>
+      <a href="AdminDisplayInvoice">Invoice</a>
+	  
+		<hr />
+		<a href="/RMS/adminLogout" id="logout">Logout</a>
+	</div>
+
+	<div class="container">
+	
+		<div class="new-add">
+			<a href="AdminMenuForm.jsp">Add New Item</a>
+		</div>
+	
+		<div class="scroll">
+
+			<table>
+
+				<tr>
+					<th>Item Name</th>
+					<th>Category</th>
+					<th>Price</th>
+					<th>Action</th>
+				</tr>
+
+				<c:forEach items="${mList }" var="c">
+
+					<tr>
+
+						<td>${c.productName }</td>
+						<td>${c.category }</td>
+						<td>${c.price }</td>
+						 
+						<td><a href="AdminUpdateMenuForm?mid=${c.productId }"
+							id="add">Update</a> | <a id="delete" href="AdminDeleteMenu?mid=${c.productId }"
+							id="add" onclick="return confirm('Are you sure want to delete this item.')">Delete</a></td>
+					</tr>
+
+				</c:forEach>
+
+			</table>
+
+		</div>
+	</div>
+
+	<script>
+		function openNav() {
+			document.getElementById('sidebar').style.width = '300px';
 		}
-		%>
-	</table>
-	</div>
 
-	<div class="parent">
-	 	<div class="first">
-		 <form method="post" action="adminAddMenu.jsp">
-		<p style="color: orange;">To add product</p>
-		  
-		<table class="">
-			<tr>
-			<td><input type="text" name="productname" required placeholder="Enter product Name"></td>
-			
-		</tr>
-		<tr>
-			<td><input type="text" name="price"  required placeholder="Enter price"></td>
-			
-		</tr>
-		<tr>
-			<td><input type="submit" name="" value="Add"></td>
-		</tr>
-		</table>
-	</form>
-	
-	</div>
-	<div class="second">
-		<form method="post" action="adminDeleteMenu.jsp">
-		<p style="color: orange;">Delete product</p>
-		<table class="">
-			<tr>
-			<td><input type="text" name="delete"  required placeholder="Enter product id"></td>
-			
-		</tr>
-		<tr>
-			<td><input type="submit" name="" value="Delete"></td>
-		</tr>
-		</table>
-	</form>
-	
-	</div>
-</div>
-	
+		function closeNav() {
+			document.getElementById('sidebar').style.width = '0';
+		}
+
+		document.addEventListener('keydown', function(e) {
+			console.log(e.key);
+
+			// check the key is 'Escape'
+			if (e.key === 'Escape') {
+				document.getElementById('sidebar').style.width = '0';
+			}
+		});
+	</script>
 </body>
 </html>

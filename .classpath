@@ -4,8 +4,8 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v9.0"/>
 	<classpathentry kind="lib" path="D:/ZSOURCE FILES/Softwares/mysql-connector-j-8.0.31/mysql-connector-j-8.0.31.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Manideep/Desktop/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="D:/ZSOURCE FILES/Softwares/Jstl jars and jdbc jars/ojdbc6.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v9.0"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
